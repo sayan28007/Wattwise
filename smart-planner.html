@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Smart Planner — WattWise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/planner.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+</head>
+<body>
+<div class="grid-field"></div>
+
+<nav class="app-nav">
+  <div class="brand"><span class="brand-dot"></span> WattWise</div>
+  <div class="app-nav-links" id="navLinks">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="smart-planner.html" class="active">Smart Planner</a>
+    <a href="profile.html">Profile</a>
+  </div>
+  <div class="app-nav-right">
+    <button class="mobile-nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('mobile-open')">☰</button>
+    <button class="icon-btn" title="Logout" onclick="logoutUser()">⏻</button>
+    <div class="avatar" id="avatarInitials">U</div>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <a href="dashboard.html" class="back-link fade-up">← Back to Dashboard</a>
+
+  <div class="glass-card planner-hero fade-up" style="margin-top:18px">
+    <div style="display:flex;align-items:center;gap:16px">
+      <div class="bolt">⚡</div>
+      <div>
+        <h1>WattWise Smart Planner</h1>
+        <p>Build a practical electricity-saving plan based on your consumption.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="reduction-trio fade-up">
+    <div class="glass-card stat-card">
+      <div class="label">Current Bill</div>
+      <div class="value" id="planCurrentBill">₹0</div>
+    </div>
+    <div class="glass-card stat-card">
+      <div class="label">Target Bill</div>
+      <div class="value" id="planTargetBill">₹0</div>
+    </div>
+    <div class="glass-card stat-card">
+      <div class="label">Required Reduction</div>
+      <div class="value" id="planRequiredReduction">₹0</div>
+    </div>
+  </div>
+
+  <div class="glass-card card fade-up" style="margin-bottom:24px">
+    <div class="section-title"><h2>📋 Your Saving Plan</h2><p>Ranked by consumption impact</p></div>
+    <div id="planList"></div>
+    <div class="planner-total">
+      <div class="t-block"><div class="t-label">Potential Energy Saving</div><div class="t-value" id="planTotalUnits">0 U/month</div></div>
+      <div class="t-block"><div class="t-label">Potential Money Saving</div><div class="t-value" id="planTotalMoney">₹0/month</div></div>
+    </div>
+  </div>
+
+  <div class="glass-card chart-card fade-up" style="margin-bottom:24px">
+    <div class="section-title"><h2>📊 Current vs Recommended Consumption</h2></div>
+    <canvas id="planChart" style="max-height:300px"></canvas>
+  </div>
+
+</div>
+
+<script src="js/app.js"></script>
+<script src="js/planner.js"></script>
+</body>
+</html>

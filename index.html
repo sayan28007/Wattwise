@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>WattWise — Electricity Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div class="grid-field"></div>
+<div class="pulse-orb"></div>
+
+<div class="landing">
+
+  <!-- NAV -->
+  <nav class="landing-nav fade-up" style="animation-delay:0s">
+    <div class="brand"><span class="brand-dot"></span> WattWise</div>
+    <div class="landing-nav-links">
+      <span>Intelligence</span>
+      <span>Planner</span>
+      <span>Insights</span>
+    </div>
+  </nav>
+
+  <!-- STATS -->
+  <div class="landing-stats">
+    <div class="stat-item fade-up" style="animation-delay:.1s">
+      <div class="stat-num"><span class="plus">+</span>12K</div>
+      <div class="stat-label">Households<br>Monitored</div>
+    </div>
+    <div class="stat-item fade-up" style="animation-delay:.2s">
+      <div class="stat-num"><span class="plus">+</span>4.2M</div>
+      <div class="stat-label">Units<br>Tracked</div>
+    </div>
+    <div class="stat-item fade-up" style="animation-delay:.3s">
+      <div class="stat-num"><span class="plus">+</span>18%</div>
+      <div class="stat-label">Avg. Bill<br>Reduction</div>
+    </div>
+  </div>
+
+  <!-- BODY: hero copy + auth card -->
+  <div class="landing-body">
+
+    <div class="landing-hero-copy fade-up" style="animation-delay:.35s">
+      <div class="hero-eyebrow">Electricity Intelligence</div>
+      <h1 class="hero-heading">
+        <span class="word"><span>Understand.</span></span>
+        <span class="word"><span>Predict.</span></span>
+        <span class="word accent-text"><span>Save.</span></span>
+      </h1>
+      <p class="hero-sub">
+        WattWise turns raw appliance runtime into a full picture of your electricity
+        future — projected bills, target tracking, and a savings plan built from
+        your own consumption data.
+      </p>
+      <div class="hero-facts">
+        <div class="hero-fact"><span class="dot"></span> Real-time unit &amp; cost engine</div>
+        <div class="hero-fact"><span class="dot"></span> Rule-based smart recommendations</div>
+        <div class="hero-fact"><span class="dot"></span> Daily limit &amp; carry-forward tracker</div>
+      </div>
+    </div>
+
+    <div class="auth-card glass-card fade-up" style="animation-delay:.45s">
+      <div class="auth-logo"><span class="brand-dot"></span><span class="auth-logo-text">WattWise</span></div>
+      <div class="auth-tagline">Electricity Intelligence</div>
+
+      <div class="auth-tabs">
+        <div class="auth-tab active" id="tabLogin" onclick="switchTab('login')">Log In</div>
+        <div class="auth-tab" id="tabSignup" onclick="switchTab('signup')">Sign Up</div>
+      </div>
+
+      <form id="authForm" onsubmit="return false;">
+        <div class="field">
+          <label>Username</label>
+          <input type="text" id="username" placeholder="e.g. arjun" autocomplete="username" />
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input type="password" id="password" placeholder="••••••••" autocomplete="current-password" />
+        </div>
+        <div class="auth-error" id="authError"></div>
+        <button class="btn btn-primary btn-block" id="authSubmit" onclick="handleAuthSubmit()">Log In</button>
+      </form>
+
+      <div class="auth-switch" id="authSwitchText">
+        New to WattWise? <b onclick="switchTab('signup')" style="cursor:pointer">Create an account</b>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="js/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dashboard — WattWise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+</head>
+<body>
+<div class="grid-field"></div>
+
+<!-- NAV -->
+<nav class="app-nav">
+  <div class="brand"><span class="brand-dot"></span> WattWise</div>
+  <div class="app-nav-links" id="navLinks">
+    <a href="dashboard.html" class="active">Dashboard</a>
+    <a href="smart-planner.html">Smart Planner</a>
+    <a href="profile.html">Profile</a>
+  </div>
+  <div class="app-nav-right">
+    <button class="mobile-nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('mobile-open')">☰</button>
+    <button class="icon-btn" title="Logout" onclick="logoutUser()">⏻</button>
+    <div class="avatar" id="avatarInitials">U</div>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <div class="page-hero fade-up">
+    <h1>Electricity Intelligence</h1>
+    <p>Understand your consumption. Predict your bill. Reduce your energy usage.</p>
+  </div>
+
+  <!-- SETUP -->
+  <div class="glass-card card fade-up" style="margin-bottom:24px">
+    <div class="section-title"><h2>⚙ Consumption Setup</h2><p>Enter your billing details</p></div>
+    <div class="grid grid-4">
+      <div class="field"><label>Price / Unit (₹)</label><input type="number" id="pricePerUnit" value="8" min="0" step="0.1" oninput="recalculate()"></div>
+      <div class="field"><label>Monthly Target (Units)</label><input type="number" id="monthlyTarget" value="200" min="0" oninput="recalculate()"></div>
+      <div class="field"><label>Billing Period (Days)</label><input type="number" id="billingPeriod" value="30" min="1" max="31" oninput="recalculate()"></div>
+      <div class="field"><label>Days Elapsed</label><input type="number" id="daysElapsed" value="15" min="1" oninput="recalculate()"></div>
+    </div>
+  </div>
+
+  <!-- APPLIANCE INPUT -->
+  <div class="glass-card card fade-up" style="margin-bottom:24px">
+    <div class="section-title"><h2>🔌 Appliance Runtime</h2><p>Daily wattage &amp; usage hours</p></div>
+    <div class="appliance-header">
+      <span>Appliance</span><span>Wattage (W)</span><span>Hrs/Day</span><span>Daily Units</span><span></span>
+    </div>
+    <div id="applianceList"></div>
+  </div>
+
+  <!-- STATS -->
+  <div class="grid grid-stats" style="margin-bottom:24px">
+    <div class="glass-card stat-card fade-up">
+      <div class="label">📅 Today's Usage</div>
+      <div class="value" id="statToday">0 <small>Units</small></div>
+    </div>
+    <div class="glass-card stat-card fade-up">
+      <div class="label">⚡ Net Units</div>
+      <div class="value" id="statNet">0 <small>Units</small></div>
+    </div>
+    <div class="glass-card stat-card fade-up">
+      <div class="label">💰 Estimated Price</div>
+      <div class="value" id="statPrice">₹0</div>
+    </div>
+    <div class="glass-card stat-card fade-up">
+      <div class="label">🎯 Monthly Target</div>
+      <div class="value" id="statTarget">0 <small>Units</small></div>
+    </div>
+  </div>
+
+  <!-- INTELLIGENCE -->
+  <div class="glass-card card fade-up" style="margin-bottom:24px">
+    <div class="section-title"><h2>🧠 Electricity Intelligence</h2><p>Projection based on current rate</p></div>
+    <div class="intel-banner safe" id="intelBanner">
+      <div class="icon" id="intelIcon">✓</div>
+      <div class="text"><b id="intelHeadline">Calculating…</b><span id="intelSub"></span></div>
+    </div>
+    <div class="grid grid-4">
+      <div>
+        <div class="label" style="font-size:11.5px;color:var(--text-dim);text-transform:uppercase;font-weight:600">Avg Daily Usage</div>
+        <div style="font-size:1.3rem;font-weight:600" id="intelAvgDaily">0 U/day</div>
+      </div>
+      <div>
+        <div class="label" style="font-size:11.5px;color:var(--text-dim);text-transform:uppercase;font-weight:600">Projected Monthly</div>
+        <div style="font-size:1.3rem;font-weight:600" id="intelProjected">0 Units</div>
+      </div>
+      <div>
+        <div class="label" style="font-size:11.5px;color:var(--text-dim);text-transform:uppercase;font-weight:600">Monthly Target</div>
+        <div style="font-size:1.3rem;font-weight:600" id="intelTarget">0 Units</div>
+      </div>
+      <div>
+        <div class="label" style="font-size:11.5px;color:var(--text-dim);text-transform:uppercase;font-weight:600">Difference</div>
+        <div style="font-size:1.3rem;font-weight:600" id="intelDiff">0 Units</div>
+      </div>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="intelProgress" style="width:0%"></div></div>
+  </div>
+
+  <!-- CHARTS ROW 1 -->
+  <div class="grid grid-2" style="margin-bottom:24px">
+    <div class="glass-card chart-card fade-up">
+      <div class="section-title"><h2>🥧 Appliance Distribution</h2></div>
+      <canvas id="applianceChart"></canvas>
+    </div>
+    <div class="glass-card chart-card fade-up">
+      <div class="section-title"><h2>📈 Consumption Trend</h2></div>
+      <canvas id="trendChart"></canvas>
+    </div>
+  </div>
+
+  <!-- CHARTS ROW 2 -->
+  <div class="glass-card chart-card fade-up" style="margin-bottom:24px">
+    <div class="section-title"><h2>🎯 Target vs Projection</h2></div>
+    <canvas id="targetChart" style="max-height:260px"></canvas>
+  </div>
+
+  <!-- BREAKDOWN LIST -->
+  <div class="glass-card card fade-up" style="margin-bottom:24px">
+    <div class="section-title"><h2>📊 Consumption Breakdown</h2></div>
+    <div id="breakdownList"></div>
+  </div>
+
+  <!-- RECOMMENDATIONS -->
+  <div class="section-title fade-up" style="margin-top:8px"><h2>💡 Smart Recommendations</h2></div>
+  <div class="grid grid-3" style="margin-bottom:24px" id="recCards"></div>
+
+  <!-- TARGET BILL -->
+  <div class="glass-card card fade-up" style="margin-bottom:24px">
+    <div class="section-title"><h2>🎯 Target Bill</h2><p>Set a bill goal and see the reduction needed</p></div>
+    <div class="grid grid-3">
+      <div class="field"><label>Current Bill (₹)</label><input type="number" id="currentBill" value="2500" oninput="recalculate()"></div>
+      <div class="field"><label>Target Bill (₹)</label><input type="number" id="targetBill" value="2000" oninput="recalculate()"></div>
+      <div>
+        <div class="label" style="font-size:11.5px;color:var(--text-dim);text-transform:uppercase;font-weight:600;margin-bottom:6px">Required Saving</div>
+        <div style="font-size:1.6rem;font-weight:600;color:var(--cyan-soft)" id="requiredSaving">₹0</div>
+        <div style="font-size:12px;color:var(--text-dim)" id="requiredSavingUnits">≈ 0 Units to cut</div>
+      </div>
+    </div>
+    <p style="margin-top:14px;font-size:13px;color:var(--text-mid)" id="targetBillSuggestion"></p>
+  </div>
+
+  <!-- ADVANCED TRACKER -->
+  <div class="glass-card card fade-up" style="margin-bottom:24px">
+    <div class="section-title"><h2>📟 Advanced Tracker</h2><p>Live daily limit tracking</p></div>
+    <div class="grid grid-4">
+      <div class="glass-card card-tight"><div class="label" style="font-size:11px;color:var(--text-dim);text-transform:uppercase;font-weight:600">Daily Limit</div><div style="font-size:1.2rem;font-weight:600" id="trackDailyLimit">0 U</div></div>
+      <div class="glass-card card-tight"><div class="label" style="font-size:11px;color:var(--text-dim);text-transform:uppercase;font-weight:600">Used Today</div><div style="font-size:1.2rem;font-weight:600" id="trackUsedToday">0 U</div></div>
+      <div class="glass-card card-tight"><div class="label" style="font-size:11px;color:var(--text-dim);text-transform:uppercase;font-weight:600">Remaining</div><div style="font-size:1.2rem;font-weight:600" id="trackRemaining">0 U</div></div>
+      <div class="glass-card card-tight"><div class="label" style="font-size:11px;color:var(--text-dim);text-transform:uppercase;font-weight:600">Carry Forward</div><div style="font-size:1.2rem;font-weight:600" id="trackCarryForward">0 U</div></div>
+    </div>
+    <div style="margin-top:10px"><span class="badge badge-safe" id="trackBadge">✓ Safe Usage</span></div>
+
+    <div class="section-title" style="margin-top:22px"><h2 style="font-size:14px">Add Tracker Appliance</h2></div>
+    <div class="grid grid-3">
+      <div class="field"><label>Name</label><input type="text" id="trackName" placeholder="e.g. Iron"></div>
+      <div class="field"><label>Wattage (W)</label><input type="number" id="trackWatt" placeholder="1000"></div>
+      <div class="field"><label>Hours Used</label><input type="number" id="trackHours" placeholder="0.5" step="0.1"></div>
+    </div>
+    <button class="btn btn-ghost" onclick="addTrackerAppliance()">+ Add Appliance</button>
+    <div class="tracker-appliance-list" id="trackerList"></div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-banner fade-up">
+    <div>
+      <h3>⚡ Ready to build a saving plan?</h3>
+      <p>Open the Smart Planner for a personalized, step-by-step reduction strategy.</p>
+    </div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <button class="btn btn-ghost" onclick="requestNotifications()">🔔 Enable Alerts</button>
+      <button class="btn btn-ghost" onclick="saveReport()">💾 Save Report</button>
+      <a href="smart-planner.html" class="btn btn-primary">Open Smart Planner →</a>
+    </div>
+  </div>
+
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Profile — WattWise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+</head>
+<body>
+<div class="grid-field"></div>
+
+<nav class="app-nav">
+  <div class="brand"><span class="brand-dot"></span> WattWise</div>
+  <div class="app-nav-links" id="navLinks">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="smart-planner.html">Smart Planner</a>
+    <a href="profile.html" class="active">Profile</a>
+  </div>
+  <div class="app-nav-right">
+    <button class="mobile-nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('mobile-open')">☰</button>
+    <button class="icon-btn" title="Logout" onclick="logoutUser()">⏻</button>
+    <div class="avatar" id="avatarInitials">U</div>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <div class="glass-card profile-head fade-up">
+    <div class="avatar" id="profileAvatar">U</div>
+    <div>
+      <h2 id="profileName">Username</h2>
+      <p id="profileMeta">0 saved reports</p>
+    </div>
+  </div>
+
+  <div class="grid grid-3" style="margin-bottom:24px">
+    <div class="glass-card stat-card fade-up">
+      <div class="label">📄 Saved Reports</div>
+      <div class="value" id="profReportCount">0</div>
+    </div>
+    <div class="glass-card stat-card fade-up">
+      <div class="label">⚡ Last Recorded Units</div>
+      <div class="value" id="profLastUnits">0 Units</div>
+    </div>
+    <div class="glass-card stat-card fade-up">
+      <div class="label">💰 Last Bill</div>
+      <div class="value" id="profLastBill">₹0</div>
+    </div>
+  </div>
+
+  <div class="glass-card card fade-up" style="margin-bottom:24px">
+    <div class="section-title"><h2>🕘 Report History</h2><p>Click a report to view its breakdown</p></div>
+    <div id="historyList"></div>
+  </div>
+
+  <div class="glass-card chart-card fade-up" id="detailCard" style="display:none;margin-bottom:24px">
+    <div class="section-title"><h2 id="detailTitle">Report Detail</h2></div>
+    <div class="grid grid-3" style="margin-bottom:18px">
+      <div><div class="label" style="font-size:11px;color:var(--text-dim);text-transform:uppercase;font-weight:600">Total Units</div><div style="font-size:1.3rem;font-weight:600" id="detailUnits">0</div></div>
+      <div><div class="label" style="font-size:11px;color:var(--text-dim);text-transform:uppercase;font-weight:600">Bill</div><div style="font-size:1.3rem;font-weight:600" id="detailBill">₹0</div></div>
+      <div><div class="label" style="font-size:11px;color:var(--text-dim);text-transform:uppercase;font-weight:600">Target</div><div style="font-size:1.3rem;font-weight:600" id="detailTarget">0</div></div>
+    </div>
+    <canvas id="detailChart" style="max-height:280px"></canvas>
+  </div>
+
+</div>
+
+<script src="js/app.js"></script>
+<script src="js/history.js"></script>
+</body>
+</html>
